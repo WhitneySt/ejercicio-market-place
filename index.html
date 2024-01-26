@@ -9,6 +9,45 @@
 <body>
     <header></header>
     <main>
+        <h2>Guardar prenda en stock</h2>
+        <form id="formProductos">
+            <label for="nombre">Nombre del producto:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingrese el nombre del producto">
+            <label for="precio">Precio del producto</label>
+            <input id="precio" type="number" name="precio" placeholder="Ingrese el precio unitario">
+            <label for="genero">Género de la prenda</label>
+            <select name="genero" id="genero">
+                <option value="">Seleccione una opción</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+            </select>
+            <label for="tipo">Tipo de prenda</label>
+            <select name="tipo" id="tipo">
+                <option value="">Seleccione una opción</option>
+                <option value="camiseta">Camiseta</option>
+                <option value="jeans">Jeans</option>
+                <option value="vestidos">Vestidos</option>
+                <option value="faldas">Faldas</option>
+                <option value="bermudas">Bermudas</option>
+            </select>
+            <label for="imagen1">Primera Imagen</label>
+            <input type="text" id="imagen1" name="imagen1" placeholder="Ingrese la ruta de una imagen">
+            <label for="imagen2">Segunda Imagen</label>
+            <input type="text" id="imagen2" name="imagen2" placeholder="Ingrese la ruta de una imagen">
+            <label for="imagen3">Tercera Imagen</label>
+            <input type="text" id="imagen3" name="imagen3" placeholder="Ingrese la ruta de una imagen">
+            <fieldset>
+                <legend>Talla de la prenda</legend>
+                <label for="talla-s"><input id="talla-s" type="radio" name="talla" value="s"> <span>S</span></label>
+                <label for="talla-m"><input id="talla-m" type="radio" name="talla" value="m"> <span>M</span></label>
+                <label for="talla-l"><input id="talla-l" type="radio" name="talla" value="l"> <span>L</span></label>
+            </fieldset>
+            <label for="cantidad">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad" placeholder="Ingrese la cantidad">
+            <label for="color">Color de la prenda</label>
+            <input id="color" type="color" name="color">
+            <button type="submit">Guardar producto</button>
+        </form>
         <section id="container-products"></section>
     </main>
     <footer>Hecho con ❤ por Frontend Cohorte 7</footer>
