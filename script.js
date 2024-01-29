@@ -71,10 +71,10 @@ const contenedorProductos = document.getElementById("container-products");
 
 const form = document.getElementById("formProductos");
 
-const insertarProductos = (contenedor,listaProductos) => {
-    contenedor.innerHTML = "";
-    listaProductos.forEach(producto => {
-        contenedor.innerHTML += `
+const insertarProductos = (contenedor, listaProductos) => {
+  contenedor.innerHTML = "";
+  listaProductos.forEach((producto) => {
+    contenedor.innerHTML += `
         <article class="cardProducto">
             <figure>
                 <img src=${producto.imagenes[0]} alt=${producto.nombre}>
@@ -83,22 +83,75 @@ const insertarProductos = (contenedor,listaProductos) => {
             <h3>${producto.nombre}</h3>
         </article>
         `;
-    });
-}
+  });
+};
 
+const obtenerDatosDelForm = (form) => {
+  const formData = new FormData(form);
+  const dataForm = {};
+  for (const [key, value] of formData.entries()) {
+    dataForm[key] = value;
+  }
+
+  return dataForm;
+};
+
+const agregarProducto = (dataForm, listaProductos) => {
+
+  const productoExistente = listaProductos.find(
+    (producto) => producto.nombre === dataForm.nombre
+  );
+
+    if (productoExistente) {
+      productoExistente.imagenes.push(
+        dataForm.imagen1,
+        dataForm.imagen2,
+        dataForm.imagen3
+        );
+        productoExistente.precioUnitario = dataForm.precio;
+    const stock = productoExistente.stock.find(
+      (producto) =>
+        producto.talla === dataForm.talla && producto.color === dataForm.color
+        );
+        console.log(stock);
+    if (stock) {
+        stock.cantidad += dataForm.cantidad;
+        //--Aquí se pueden actualizar las imágenes
+        // productoExistente.imagenes = [dataForm.imagen1, dataForm.imagen2, dataForm.imagen3];
+    } else {
+      productoExistente.stock.push({
+        talla: dataForm.talla,
+        cantidad: dataForm.cantidad,
+        color: dataForm.color,
+      });
+    }
+  } else {
+    const productoNuevo = {
+      id: listaProductos.length + 1,
+      nombre: dataForm.nombre,
+      categoria: [dataForm.genero, dataForm.tipo],
+      imagenes: [dataForm.imagen1, dataForm.imagen2, dataForm.imagen3],
+      precioUnitario: dataForm.precio,
+      stock: [
+        {
+          talla: dataForm.talla,
+          cantidad: dataForm.cantidad,
+          color: dataForm.color,
+        },
+      ],
+    };
+    listaProductos.push(productoNuevo);
+  }
+};
 
 insertarProductos(contenedorProductos, productos);
 
 form.addEventListener("submit", (evento) => {
-    evento.preventDefault();
-    const formData = new FormData(form);
-    const dataForm = {}
-    
-    console.log(formData.entries());
+  evento.preventDefault();
 
-    for (const [key, value] of formData.entries()) {
-        dataForm[key] = value;
-    }
-
-    console.log(dataForm);
-})
+    const newProduct = obtenerDatosDelForm(form);
+    agregarProducto(newProduct, productos);
+    insertarProductos(contenedorProductos, productos);
+    console.log(productos);
+    form.reset();
+});
