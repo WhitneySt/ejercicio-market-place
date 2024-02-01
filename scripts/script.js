@@ -75,7 +75,7 @@ const insertarProductos = (contenedor, listaProductos) => {
   contenedor.innerHTML = "";
   listaProductos.forEach((producto) => {
     contenedor.innerHTML += `
-        <article class="cardProducto">
+        <article class="cardProducto" name=${producto.id}>
             <figure>
                 <img src=${producto.imagenes[0]} alt=${producto.nombre}>
             </figure>
@@ -97,27 +97,26 @@ const obtenerDatosDelForm = (form) => {
 };
 
 const agregarProducto = (dataForm, listaProductos) => {
-
   const productoExistente = listaProductos.find(
     (producto) => producto.nombre === dataForm.nombre
   );
 
-    if (productoExistente) {
-      productoExistente.imagenes.push(
-        dataForm.imagen1,
-        dataForm.imagen2,
-        dataForm.imagen3
-        );
-        productoExistente.precioUnitario = dataForm.precio;
+  if (productoExistente) {
+    productoExistente.imagenes.push(
+      dataForm.imagen1,
+      dataForm.imagen2,
+      dataForm.imagen3
+    );
+    productoExistente.precioUnitario = dataForm.precio;
     const stock = productoExistente.stock.find(
       (producto) =>
         producto.talla === dataForm.talla && producto.color === dataForm.color
-        );
-        console.log(stock);
+    );
+    console.log(stock);
     if (stock) {
-        stock.cantidad += dataForm.cantidad;
-        //--Aquí se pueden actualizar las imágenes
-        // productoExistente.imagenes = [dataForm.imagen1, dataForm.imagen2, dataForm.imagen3];
+      stock.cantidad += dataForm.cantidad;
+      //--Aquí se pueden actualizar las imágenes
+      // productoExistente.imagenes = [dataForm.imagen1, dataForm.imagen2, dataForm.imagen3];
     } else {
       productoExistente.stock.push({
         talla: dataForm.talla,
@@ -144,14 +143,27 @@ const agregarProducto = (dataForm, listaProductos) => {
   }
 };
 
+const goToDetailsProduct = () => {
+  const cards = document.querySelectorAll(".cardProducto");
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const idProduct = card.getAttribute("name");
+      localStorage.setItem("idProduct", JSON.stringify(idProduct));
+      location.href = "./pages/details.html";
+    });
+  });
+};
+
 insertarProductos(contenedorProductos, productos);
+goToDetailsProduct();
 
 form.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
-    const newProduct = obtenerDatosDelForm(form);
-    agregarProducto(newProduct, productos);
-    insertarProductos(contenedorProductos, productos);
-    console.log(productos);
-    form.reset();
+  const newProduct = obtenerDatosDelForm(form);
+  agregarProducto(newProduct, productos);
+  insertarProductos(contenedorProductos, productos);
+  console.log(productos);
+  form.reset();
 });
