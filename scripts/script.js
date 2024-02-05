@@ -29,7 +29,32 @@ const obtenerDatosDelForm = (form) => {
   return dataForm;
 };
 
+const validateDataForm = (dataForm) => {
+  let emptyFields = [];
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
+  for (const key in dataForm) {
+    if (dataForm[key].trim() == "") {
+      emptyFields.push(key);
+    }
+  }
+
+  if (!dataForm.talla) {
+    emptyFields.push("talla");
+  }
+
+  if (dataForm.nombre.length <= 3) {
+    alert("El nombre debe contener más de 3 caracteres");
+    emptyFields.push('nombre');
+  }
+
+  if (!emailRegex.test(dataForm.email)) {
+    alert("El email ingresado no es valido");
+    emptyFields.push("email");
+  }
+
+  return emptyFields.length > 0 ? emptyFields : false;
+};
 
 const agregarProducto = (dataForm, listaProductos) => {
   const productoExistente = listaProductos.find(
@@ -90,7 +115,6 @@ const goToDetailsProduct = () => {
   });
 };
 
-
 insertarProductos(contenedorProductos, productos);
 goToDetailsProduct();
 
@@ -98,8 +122,16 @@ form.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
   const newProduct = obtenerDatosDelForm(form);
-  agregarProducto(newProduct, productos);
-  insertarProductos(contenedorProductos, productos);
-  console.log(productos);
-  form.reset();
+  const validation = validateDataForm(newProduct);
+  console.log(validation);
+  if (validation) {
+    alert(
+      "El formulario tiene los siguientes datos vacíos " + validation.toString()
+    );
+  } else {
+    agregarProducto(newProduct, productos);
+    insertarProductos(contenedorProductos, productos);
+    console.log(productos);
+    form.reset();
+  }
 });
