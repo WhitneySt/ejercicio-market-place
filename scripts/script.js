@@ -135,3 +135,9 @@ form.addEventListener("submit", (evento) => {
     form.reset();
   }
 });
+
+//1. ¿Cómo crear el JSON Server para este proyecto?
+//2. ¿Cómo correr el JSON Server?
+//3. Realizar la petición GET de los productos en el JSON Server
+//4. ¿Cómo podemos filtrar los productos por categorías?
+//5. ¿Cómo realizar el despliegue del Front en gh-pages haciendo uso de GitHub actions?
