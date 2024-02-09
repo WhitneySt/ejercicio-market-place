@@ -1,9 +1,23 @@
-import { productos } from "../modules/products.js";
+// import { productos } from "../modules/products.js";
 
 const idProduct = JSON.parse(localStorage.getItem("idProduct"));
+const URL_BASE = "https://minibackend-market-place-dev-rsgz.1.us-1.fl0.io/";
 
-const selectedProduct = productos.find((product) => product.id == idProduct);
-console.log(selectedProduct);
+const getProduct = async (url, id) => {
+  try {
+    const response = await fetch(`${url}/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+
+
+// const selectedProduct = productos.find((product) => product.id == idProduct);
+// console.log(selectedProduct);
 
 const printCategories = (categoriesList) => {
   let html = "";
@@ -64,5 +78,12 @@ const printDetailsProduct = (product) => {
     `;
 };
 
-printDetailsProduct(selectedProduct);
-showColors(selectedProduct.stock);
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const url = `${URL_BASE}productos`;
+  const selectedProduct = await getProduct(url, idProduct);
+  console.log(selectedProduct);
+  printDetailsProduct(selectedProduct);
+  showColors(selectedProduct.stock);
+});

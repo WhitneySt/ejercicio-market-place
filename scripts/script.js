@@ -1,4 +1,19 @@
-import { productos } from "../modules/products.js";
+// import { productos } from "../modules/products.js";
+
+//Necesitamos construir una función que nos permita obtener los productos desde la API
+
+const URL_BASE = "https://minibackend-market-place-dev-rsgz.1.us-1.fl0.io/";
+
+const getproducts = async (url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
 
 const contenedorProductos = document.getElementById("container-products");
 
@@ -45,7 +60,7 @@ const validateDataForm = (dataForm) => {
 
   if (dataForm.nombre.length <= 3) {
     alert("El nombre debe contener más de 3 caracteres");
-    emptyFields.push('nombre');
+    emptyFields.push("nombre");
   }
 
   if (!emailRegex.test(dataForm.email)) {
@@ -115,8 +130,13 @@ const goToDetailsProduct = () => {
   });
 };
 
-insertarProductos(contenedorProductos, productos);
-goToDetailsProduct();
+document.addEventListener("DOMContentLoaded", async () => {
+  const url = `${URL_BASE}productos`
+  const productos = await getproducts(url);
+  // console.log(productos);
+  insertarProductos(contenedorProductos, productos);
+  goToDetailsProduct();
+})
 
 form.addEventListener("submit", (evento) => {
   evento.preventDefault();
@@ -136,8 +156,9 @@ form.addEventListener("submit", (evento) => {
   }
 });
 
-//1. ¿Cómo crear el JSON Server para este proyecto?
-//2. ¿Cómo correr el JSON Server?
-//3. Realizar la petición GET de los productos en el JSON Server
+//1. ¿Cómo crear el JSON Server para este proyecto? OK
+//2. ¿Cómo correr el JSON Server? OK
+//2.1. Despliegue de JSON Server, es decir del miniback. OK
+//3. Realizar la petición GET de los productos en el JSON Server OK
 //4. ¿Cómo podemos filtrar los productos por categorías?
-//5. ¿Cómo realizar el despliegue del Front en gh-pages haciendo uso de GitHub actions?
+//5. ¿Cómo realizar el despliegue del Front en gh-pages haciendo uso de GitHub actions? OK
